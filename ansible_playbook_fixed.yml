@@ -1,0 +1,22 @@
+
+---
+- name: Filebeat Installation 
+  hosts: localhost
+  become: yes
+  
+  tasks:
+    - name: Download Filebeat RPM
+      get_url:
+        url: "https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.10.0-x86_64.rpm"
+        dest: "/opt/filebeat.rpm"
+
+    - name: Install Filebeat
+      yum:
+        name: "/opt/filebeat.rpm"
+        state: present
+
+    - name: Copy Filebeat configuration
+      copy:
+        src: "{{ playbook_dir }}/filebeat_fixed.yml"  # Düzeltmiş olduğumuz yapılandırma dosyasının yolu
+        dest: "/etc/filebeat/filebeat.yml"  # Hedef dosyanın yolu
+
